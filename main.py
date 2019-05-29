@@ -34,7 +34,9 @@ if __name__ == "__main__":
 
     model.fit(train_X, train_Y, epochs=50, batch_size=1, verbose=0, shuffle=False)
     prediction = model.predict(test_X).flatten()
+    print(test_X)
     print(prediction)
+    print(test_Y.flatten())
 
     loss, accuracy = model.evaluate(test_X, test_Y, verbose=0)
     print("Accuracy = {:.2f}".format(accuracy))
