@@ -16,7 +16,7 @@ if __name__ == "__main__":
     X = preprocessing.scale(X)
     # Y = np_utils.to_categorical(Y)
 
-    train_X, test_X, train_Y, test_Y = train_test_split(X, Y, train_size=0.8)
+    train_X, test_X, train_Y, test_Y = train_test_split(X, Y, train_size=0.8, shuffle=False)
     print(train_X.shape, test_X.shape, train_Y.shape, test_Y.shape)
 
     model = Sequential()
@@ -32,8 +32,8 @@ if __name__ == "__main__":
                   loss='mean_squared_error',
                   metrics=['mae'])
 
-    model.fit(train_X, train_Y, epochs=50, batch_size=1,verbose=0)
-    prediction=model.predict(test_X).flatten()
+    model.fit(train_X, train_Y, epochs=50, batch_size=1, verbose=0, shuffle=False)
+    prediction = model.predict(test_X).flatten()
     print(prediction)
 
     loss, accuracy = model.evaluate(test_X, test_Y, verbose=0)
