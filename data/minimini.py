@@ -3,15 +3,16 @@ import bs4
 import sys
 import codecs
 import json
+import csv
 sys.stdout = codecs.getwriter("utf-8")(sys.stdout.detach())
 url = 'https://minimini.jp/list/pref/tokyo/chofushi/?lnkdiv=6&SortKBN=5&ListNum=5'
 
 
 def get_data(url):
     print(url)
-    # html=requests.get(url).text
+    # html=requests.get(url,headers={'user-agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36'}).text
     data = []
-    with open('data/source2.html', 'rt', encoding='utf-8') as f:
+    with open('data/source3.html', 'rt', encoding='utf-8') as f:
         html = f.read()
     doc = bs4.BeautifulSoup(html, 'html.parser')
     for bukken in doc.select('.bukken'):
@@ -31,13 +32,14 @@ def get_data(url):
 
         yachin = float(bukken.select_one('.room_table td.chiryo > strong').get_text())
 
-        data.append({
-            'when': when,
-            'walk': walk,
-            'menseki': menseki,
-            'kaisu': kaisu_num,
-            'yachin': yachin
-        })
+        # data.append({
+        #     'when': when,
+        #     'walk': walk,
+        #     'menseki': menseki,
+        #     'kaisu': kaisu_num,
+        #     'yachin': yachin
+        # })
+        data.append([when,walk,menseki,kaisu_num,yachin])
     return data
 
 
@@ -52,5 +54,9 @@ def get_data(url):
 #     #     break
 
 
-with open('data/data2.json', 'wt', encoding='utf-8') as f:
-    json.dump(get_data(url), f)
+with open('data/data1.csv', 'wt', encoding='utf-8',newline='') as f:
+    writer=csv.writer(f)
+    writer.writerow(['when','walk','menseki','kaisu','yachin'])
+    for d in get_data(url):
+        writer.writerow(d)
+    # json.dump(get_data(url), f)
