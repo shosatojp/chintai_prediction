@@ -10,10 +10,10 @@ url = 'https://minimini.jp/list/pref/tokyo/chofushi/?lnkdiv=6&SortKBN=5&ListNum=
 
 def get_data(url):
     print(url)
-    # html=requests.get(url,headers={'user-agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36'}).text
+    html = requests.get(url, headers={'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36'}).text
     data = []
-    with open('data/source3.html', 'rt', encoding='utf-8') as f:
-        html = f.read()
+    # with open('data/source3.html', 'rt', encoding='utf-8') as f:
+    #     html = f.read()
     doc = bs4.BeautifulSoup(html, 'html.parser')
     for bukken in doc.select('.bukken'):
         tateya_table = bukken.select_one('.tateya_table')
@@ -39,24 +39,24 @@ def get_data(url):
         #     'kaisu': kaisu_num,
         #     'yachin': yachin
         # })
-        data.append([when,walk,menseki,kaisu_num,yachin])
+        data.append([when, walk, menseki, kaisu_num, yachin])
     return data
 
 
-# data = []
-# i = 1
-# while True:
-#     # try:
-#         data.extend(get_data(url+'&dp='+str(i)))
-#         i += 1
-#     # except Exception as ex:
-#     #     print(ex)
-#     #     break
+data = []
+i = 1
+while True:
+    # try:
+        data.extend(get_data(url+'&dp='+str(i)))
+        i += 1
+    # except Exception as ex:
+    #     print(ex)
+    #     break
 
 
-with open('data/data1.csv', 'wt', encoding='utf-8',newline='') as f:
-    writer=csv.writer(f)
-    writer.writerow(['when','walk','menseki','kaisu','yachin'])
+with open('data/data1.csv', 'wt', encoding='utf-8', newline='') as f:
+    writer = csv.writer(f)
+    writer.writerow(['when', 'walk', 'menseki', 'kaisu', 'yachin'])
     for d in get_data(url):
         writer.writerow(d)
     # json.dump(get_data(url), f)
